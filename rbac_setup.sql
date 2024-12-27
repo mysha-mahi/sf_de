@@ -1,4 +1,9 @@
 use role sysadmin;
+create or replace database bakery_db;
+create warehouse if not exists bakery_wh with warehouse_size = 'X-SMALL';
+
+
+use role sysadmin;
 use warehouse bakery_wh;
 use database bakery_db;
 

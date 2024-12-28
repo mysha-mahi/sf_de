@@ -23,5 +23,6 @@ create or replace git repository sf_de
 
 
 alter git repository SF_DE fetch;
-show git branches in SF_DE;
-ls @sf_de/branches/main;
+--show git branches in SF_DE;
+--ls @sf_de/branches/main;
+execute immediate from @sf_de\branches\main\rbac_setup.sql

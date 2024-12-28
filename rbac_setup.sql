@@ -37,6 +37,10 @@ grant role data_engineer_role to role sysadmin;
 grant role data_engineer_role to user identifier($my_current_user);
 grant usage on warehouse bakery_wh to role data_engineer_role;
 
+grant usage on database admin_db to role data_engineer_role;
+grant usage on schema admin_db.git_integration to role data_engineer_role;
+grant all on git repository sf_de to role data_engineer_role; 
+
 
 grant usage on database bakery_db to role bakery_read_role;
 grant usage on schema bakery_db.raw_schema to role bakery_read_role;

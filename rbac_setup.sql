@@ -13,6 +13,18 @@ set my_current_user = current_user();
 create or replace schema bakery_db.raw_schema with managed access;
 create or replace schema bakery_db.rpt_schema with managed access;
 
+
+
+use role sysadmin;
+use warehouse bakery_wh;
+use database bakery_db;
+
+create or replace schema extract_layer with managed access;
+create or replace schema stage_layer with managed access;
+create or replace schema data_warehouse_layer with managed access;
+create or replace schema presentation_layer with managed access;
+
+
 use role accountadmin;
 drop role if exists bakery_full_role;
 drop role if exists bakery_read_role;
@@ -55,6 +67,24 @@ grant role data_analyst_role to role sysadmin;
 grant role data_analyst_role to user identifier($my_current_user);
 grant usage on warehouse bakery_wh to role data_analyst_role;
 
+
+grant all on schema bakery_db.extract_layer to role bakery_full_role;
+grant all on schema bakery_db.stage_layer to role bakery_full_role;
+grant all on schema bakery_db.data_warehouse_layer to role bakery_full_role;
+grant all on schema bakery_db.presentation_layer to role bakery_full_role;
+
+
+grant select on all tables in schema bakery_db.presentation_layer to role bakery_read_role;
+grant select on all views in schema bakery_db.presentation_layer to role bakery_read_role;
+grant select on future tables in schema bakery_db.presentation_layer to role bakery_read_role;
+grant select on future views in schema bakery_db.presentation_layer to role bakery_read_role;
+
+
+grant role data_analyst_bread_role to role sysadmin;
+grant role data_analyst_pastry_role to role sysadmin;
+grant role data_analyst_bread_role to user identifier($my_current_user);
+grant role data_analyst_pastry_role to user identifier($my_current_user);
+
 use role useradmin;
 create or replace role data_analyst_bread_role;
 create or replace role data_analyst_pastry_role;
@@ -63,16 +93,8 @@ grant role bakery_read_role to role data_analyst_bread_role;
 grant role bakery_read_role to role data_analyst_pastry_role;
 
 use role sysadmin;
-
 create schema if not exists bakery_db.dg_schema with managed access;
 grant all on schema bakery_db.dg_schema to role bakery_full_role;
-
-use role securityadmin;
-grant role data_analyst_bread_role to role sysadmin;
-grant role data_analyst_pastry_role to role sysadmin;
-grant role data_analyst_bread_role to user identifier($my_current_user);
-grant role data_analyst_pastry_role to user identifier($my_current_user);
-
 
 use role sysadmin;
 grant usage on warehouse bakery_wh to role data_analyst_bread_role;
@@ -81,6 +103,9 @@ grant usage on warehouse bakery_wh to role data_analyst_pastry_role;
 use role accountadmin;
 grant create row access policy on schema bakery_db.dg_schema to role data_engineer_role;
 grant apply row access policy on account to role data_engineer_role;
+
+
+
 
 
 select name as role_name from SNOWFLAKE.ACCOUNT_USAGE.ROLES where role_type = 'ROLE'

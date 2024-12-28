@@ -76,3 +76,6 @@ grant usage on warehouse bakery_wh to role data_analyst_pastry_role;
 use role accountadmin;
 grant create row access policy on schema bakery_db.dg_schema to role data_engineer_role;
 grant apply row access policy on account to role data_engineer_role;
+
+
+--select catalog_name as database_name, schema_name, schema_owner from BAKERY_DB.INFORMATION_SCHEMA.SCHEMATA ---where schema_owner is not null and is_managed_access = 'YES';
